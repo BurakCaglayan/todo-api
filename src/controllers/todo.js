@@ -1,3 +1,5 @@
+import { TodoModel } from "../db/models/todo";
+
 let todos = [
   {
     id: 1,
@@ -9,33 +11,25 @@ let todos = [
 
 class _TodoController {
   list(req, res) {
-    return res.json(todos);
+    return TodoModel.find().then((result) => res.json(result));
   }
 
   get(req, res) {
-    return res.json(todos.find((todo) => todo.id == req.params.id));
+    return TodoModel.findById(req.params.id).then((result) => res.json(result));
   }
 
   create(req, res) {
-    const id = todos.length > 0 ? todos[todos.length - 1].id + 1 : 1;
-
-    const item = { ...req.body, id };
-    todos.push(item);
-    return res.json(item);
+    return TodoModel.create(req.body).then((result) => res.json(result));
   }
 
   update(req, res) {
-    const index = todos.findIndex((todo) => todo.id == req.params.id);
-    if (index === -1) {
-      return res.status("404").end();
-    }
-    todos[index] = { ...todos[index], ...req.body };
-    return res.json(todos[index]);
+    return TodoModel.findByIdAndUpdate(req.params.id, req.body, { new: true }).then((result) =>
+      res.json(result)
+    );
   }
 
   delete(req, res) {
-    todos = todos.filter((todo) => todo.id != req.params.id);
-    return res.status("204").end();
+    return TodoModel.findByIdAndDelete(req.params.id).then(() => res.status(204).end());
   }
 }
 
