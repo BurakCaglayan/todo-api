@@ -17,5 +17,9 @@ app.get("/api/health-check", (req, res) => {
   });
 });
 
+app.get("*", (req, res) => {
+  res.status(404).end("Not Found")
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Api running on port ${port}`));
