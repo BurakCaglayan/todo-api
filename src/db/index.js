@@ -7,7 +7,7 @@ mongoose.connection
   });
 
 export const connectDb = () => {
-  return mongoose.connect(process.env.DATABASE_URL, {
+  return mongoose.connect(process.env.MONGODB_URI, {
     // https://mongoosejs.com/docs/deprecations.html#
     useNewUrlParser: true,
     useCreateIndex: true,
